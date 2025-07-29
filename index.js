@@ -1,4 +1,4 @@
-import neo4j from 'neo4j-driver'
+import neo4j, { session } from 'neo4j-driver';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -10,7 +10,12 @@ let driver = neo4j.driver(
 
 conectar();
 async function conectar() {
-    let session = driver.session();
-    console.log('Conectado');
-    session.close();
+    driver.session().run(
+        'MERGE (p:Cliente{nome: $nome, email:$email})',
+        {nome:'João', email:'joao@gmail.com'}
+    ).then(result=> {
+        console.log(result.summary)
+    }).catch(error =>{
+        console.log(error);
+    })
 }
