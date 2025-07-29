@@ -11,10 +11,10 @@ let driver = neo4j.driver(
 conectar();
 async function conectar() {
     driver.session().run(
-        'MERGE (p:Cliente{nome: $nome, email:$email})',
-        {nome:'João', email:'joao@gmail.com'}
+        'MATCH (c:Cliente{nome:$nome}) RETURN c.nome, c.email',
+        {nome:'João'}
     ).then(result=> {
-        console.log(result.summary)
+        console.log(result.records);
     }).catch(error =>{
         console.log(error);
     })
